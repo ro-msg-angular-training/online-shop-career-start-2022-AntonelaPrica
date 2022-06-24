@@ -1,0 +1,12 @@
+<app-header></app-header>
+<div *ngIf='!(isLoading$ | async)'>
+  <app-product-list-view [products]='products'
+                         [displayedColumns]='displayedColumns'
+                         [isCurrentUserAdmin]='isCurrentUserAdmin'
+                         [isCurrentUserCustomer]='isCurrentUserCustomer'
+                         (goToCartEvent)='onCartClick()'
+                         (productDetailsEvent)='onProductClick($event)'
+                         (addProductEvent)='onAddProduct()'
+                         (addToCartEvent)='onAddToCart($event)'>
+  </app-product-list-view>
+</div>
