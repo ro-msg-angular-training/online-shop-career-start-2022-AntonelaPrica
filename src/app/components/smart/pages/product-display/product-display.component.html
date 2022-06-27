@@ -1,0 +1,10 @@
+<app-header></app-header>
+<div *ngIf='productForm'>
+  <app-product-display-view [productForm]='productForm'
+                            [disabled]='disabled'
+                            [isCurrentUserAdmin]='isCurrentUserAdmin'
+                            (editProductEvent)='onEditProduct()'
+                            (deleteProductEvent)='onDeleteProduct()'>
+  </app-product-display-view>
+</div>
+

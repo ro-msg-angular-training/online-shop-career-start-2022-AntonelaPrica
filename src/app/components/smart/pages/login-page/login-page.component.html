@@ -1,0 +1,8 @@
+<app-header></app-header>
+
+<div *ngIf='!(isLoading$ | async)'>
+  <app-login-page-view [loginForm]='loginForm' (loginEvent)='loginUser()'></app-login-page-view>
+</div>
+
+
+

@@ -1,0 +1,60 @@
+<mat-grid-list cols='5' rowHeight='5:11'>
+  <mat-grid-tile></mat-grid-tile>
+
+  <mat-grid-tile [colspan]='3'>
+    <div class='full-width full-height flex-display column-display small-top-margin'>
+      <div class='flex-display align-end small-column-gap'>
+        <button mat-raised-button color='primary' (click)='addProductEvent.emit()' [disabled]='!isCurrentUserAdmin'>
+          Add
+        </button>
+        <button mat-raised-button color='primary' (click)='goToCartEvent.emit()' [disabled]='!isCurrentUserCustomer'>
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
+
+      <div class='scrollable-container'>
+        <table mat-table [dataSource]='products' class='full-width'>
+
+          <ng-container matColumnDef='category'>
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef='let product'>{{product.category}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef='name'>
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef='let product'><p>{{product.name}}</p></td>
+          </ng-container>
+
+          <ng-container matColumnDef='price'>
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef='let product'> {{product.price}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef='addToCart'>
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef='let product'>
+              <button mat-button (click)='addToCartEvent.emit(product)'>
+                <mat-icon>add_shopping_cart</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef='details'>
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef='let product'>
+              <button mat-button (click)='productDetailsEvent.emit(product.id)'>
+                <mat-icon>arrow_right</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef='displayedColumns'></tr>
+          <tr mat-row *matRowDef='let product; columns: displayedColumns;'></tr>
+        </table>
+      </div>
+
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>

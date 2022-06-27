@@ -1,0 +1,16 @@
+<mat-grid-list cols='3'>
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile>
+    <app-product-details class='full-width' [productForm]='productForm' [disable]='disabled'></app-product-details>
+
+    <mat-grid-tile-footer class='tile-footer' style='background-color: white'>
+      <button mat-raised-button color='primary' (click)='deleteProductEvent.emit()' [disabled]='!isCurrentUserAdmin'>
+        Delete
+      </button>
+      <button mat-raised-button color='primary' (click)='editProductEvent.emit()' [disabled]='!isCurrentUserAdmin'>
+        Edit
+      </button>
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>

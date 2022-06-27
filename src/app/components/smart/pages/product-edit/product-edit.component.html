@@ -1,0 +1,9 @@
+<app-header></app-header>
+<div>
+  <app-product-edit-view [productForm]='productForm'
+                         [disabled]='true'
+                         (cancelEvent)='onCancelEdit()'
+                         (saveEvent)='onSaveEdit()'>
+  </app-product-edit-view>
+</div>
+
