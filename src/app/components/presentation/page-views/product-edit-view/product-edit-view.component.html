@@ -1,0 +1,12 @@
+<mat-grid-list cols='3'>
+  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile>
+    <app-product-details class='full-width' [disable]='disabled' [productForm]='productForm'></app-product-details>
+
+    <mat-grid-tile-footer class='tile-footer' style='background-color: white'>
+      <button mat-raised-button color='primary' (click)='cancelEvent.emit()'>Cancel</button>
+      <button mat-raised-button color='primary' (click)='saveEvent.emit()' [disabled]='!productForm.valid'>Save</button>
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>

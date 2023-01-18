@@ -1,0 +1,10 @@
+<app-header></app-header>
+<div>
+  <app-cart-view [displayedColumns]='displayedColumns'
+                 [cartProducts]='cartProducts'
+                 (checkoutEvent)='onCheckout($event)'
+                 (increaseQuantityEvent)='onIncreaseQuantity($event)'
+                 (decreaseQuantityEvent)='onDecreaseQuantity($event)'
+                 (removeCartProductEvent)='onRemoveCartProduct($event)'>
+  </app-cart-view>
+</div>

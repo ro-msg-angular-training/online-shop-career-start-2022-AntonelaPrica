@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.full-width{
+  width: 100%;
+}
+
+.small-top-margin{
+  margin-top: 2%
+}
+
+.tile-footer{
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1%;
+}
+
+.scrollable-container {
+  margin-top: 1%;
+  overflow: auto;
+}
+
+.flex-display{
+  display: flex;
+}
+
+.align-end{
+  justify-content: flex-end;
+}
+
+.full-height{
+  max-height: 100%;
+}
+
+.column-display{
+  flex-direction: column;
+}
+
+.small-column-gap{
+  column-gap: 2%;
+}
+
+
