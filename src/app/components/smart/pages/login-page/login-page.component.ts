@@ -1,36 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/states/app.state';
 import { UserCredentials } from '../../../../model/UserCredentials';
 import { Observable } from 'rxjs';
 import { selectAuthIsLoading } from '../../../../store/selectors/auth.selectors';
-import { loginUser } from '../../../../store/actions/auth.actions';
+import { LoginUser } from '../../../../store/actions/auth.actions';
 
 @Component({
 	selector: 'app-login-page',
 	templateUrl: './login-page.component.html',
-	styleUrls: ['./login-page.component.scss'],
+	styleUrls: [],
 })
 export class LoginPageComponent implements OnInit {
 	isLoading$: Observable<boolean> | undefined;
+	loginForm!: FormGroup;
 
-	loginForm = this.formBuilder.group({
-		username: new FormControl('', [Validators.required]),
-		password: new FormControl('', [Validators.required]),
-	});
-
-	constructor(private formBuilder: FormBuilder, private store: Store<AppState>) {}
+	constructor(private store: Store<AppState>) {}
 
 	ngOnInit(): void {
 		this.isLoading$ = this.store.select(selectAuthIsLoading);
+		this.loginForm = new FormGroup({
+			username: new FormControl('', [Validators.required]),
+			password: new FormControl('', [Validators.required]),
+		});
 	}
 
 	loginUser() {
-		const payload: UserCredentials = {
-			username: this.loginForm.get('username')?.value || '',
-			password: this.loginForm.get('password')?.value || '',
-		};
-		this.store.dispatch(loginUser({ userCredentials: payload }));
+		const payload: UserCredentials = this.loginForm.value;
+		this.store.dispatch(LoginUser({ userCredentials: payload }));
 	}
 }

@@ -1,69 +1,69 @@
 import { initialProductState } from '../states/product.state';
 import {
-	deleteProduct,
-	deleteProductFailure,
-	deleteProductSuccess,
-	getProduct,
-	getProductFailure,
-	getProductSuccess,
-	updateProduct,
-	updateProductFailure,
-	updateProductSuccess,
+	DeleteProduct,
+	DeleteProductFailure,
+	DeleteProductSuccess,
+	GetProduct,
+	GetProductFailure,
+	GetProductSuccess,
+	UpdateProduct,
+	UpdateProductFailure,
+	UpdateProductSuccess,
 } from '../actions/product.actions';
 import { createReducer, on } from '@ngrx/store';
 
 export const ProductReducer = createReducer(
 	initialProductState,
 
-	on(getProduct, (state) => ({
+	on(GetProduct, (state) => ({
 		...state,
 		loading: true,
 	})),
 
-	on(getProductSuccess, (state, { product }) => ({
+	on(GetProductSuccess, (state, { product }) => ({
 		...state,
 		currentProduct: product,
 		loading: false,
 		error: false,
 	})),
 
-	on(getProductFailure, (state) => ({
+	on(GetProductFailure, (state) => ({
 		...state,
 		loading: false,
 		error: true,
 	})),
 
-	on(updateProduct, (state) => ({
+	on(UpdateProduct, (state) => ({
 		...state,
 		loading: true,
 	})),
 
-	on(updateProductSuccess, (state) => ({
+	on(UpdateProductSuccess, (state) => ({
 		...state,
 		currentProduct: null,
 		loading: false,
 		error: false,
 	})),
 
-	on(updateProductFailure, (state) => ({
+	on(UpdateProductFailure, (state) => ({
 		...state,
 		loading: false,
 		error: true,
 	})),
 
-	on(deleteProduct, (state) => ({
+	on(DeleteProduct, (state) => ({
 		...state,
 		loading: true,
 	})),
 
-	on(deleteProductSuccess, (state) => ({
+	on(DeleteProductSuccess, (state) => ({
 		...state,
 		currentProduct: null,
 		loading: false,
 		error: false,
 	})),
 
-	on(deleteProductFailure, (state) => ({
+	on(DeleteProductFailure, (state) => ({
 		...state,
 		loading: false,
 		error: true,

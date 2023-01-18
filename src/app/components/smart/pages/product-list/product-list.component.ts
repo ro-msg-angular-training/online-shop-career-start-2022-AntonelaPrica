@@ -1,54 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '../../../../model/Product';
-import { ProductsService } from '../../../../service/products.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/states/app.state';
 import { selectIsError, selectIsLoading, selectProducts } from '../../../../store/selectors/product-list.selectors';
-import { getProduct } from '../../../../store/actions/product.actions';
-import { firstValueFrom, Observable } from 'rxjs';
-import { addCartProduct, updateCartProduct } from '../../../../store/actions/cart.actions';
+import { GetProduct } from '../../../../store/actions/product.actions';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
+import { AddCartProduct, UpdateCartProduct } from '../../../../store/actions/cart.actions';
 import { selectCartProducts } from '../../../../store/selectors/cart.selectors';
 import { UserLoginService } from '../../../../service/user-login.service';
-import { getProductList } from '../../../../store/actions/product-list.actions';
+import { GetProductList } from '../../../../store/actions/product-list.actions';
 
 @Component({
 	selector: 'app-product-list',
 	templateUrl: './product-list.component.html',
-	styleUrls: ['./product-list.component.scss'],
+	styleUrls: [],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
 	products: MatTableDataSource<Product> = new MatTableDataSource<Product>();
 	displayedColumns = ['category', 'name', 'price', 'addToCart', 'details'];
 	isLoading$: Observable<boolean> | undefined;
 	isError$: Observable<boolean> | undefined;
-	isCurrentUserAdmin: boolean;
-	isCurrentUserCustomer: boolean;
+	isCurrentUserAdmin!: boolean;
+	isCurrentUserCustomer!: boolean;
+	subscriptions: Subscription = new Subscription();
 
 	constructor(
-		private productsService: ProductsService,
 		private router: Router,
 		private store: Store<AppState>,
 		private userLoginService: UserLoginService
 	) {
-		this.isCurrentUserAdmin = userLoginService.isUserAdmin;
-		this.isCurrentUserCustomer = userLoginService.isUserCustomer;
+
+	}
+
+	ngOnInit(): void {
+		this.isCurrentUserAdmin = this.userLoginService.isUserAdmin;
+		this.isCurrentUserCustomer = this.userLoginService.isUserCustomer;
 
 		if (!this.isCurrentUserCustomer) {
 			this.displayedColumns = this.displayedColumns.filter((col) => col != 'addToCart');
 		}
-	}
 
-	ngOnInit(): void {
-		this.store.dispatch(getProductList());
+		this.store.dispatch(GetProductList());
 		this.isLoading$ = this.store.select(selectIsLoading);
 		this.isError$ = this.store.select(selectIsError);
-		this.store.select(selectProducts).subscribe((products) => (this.products.data = products));
+		this.subscriptions.add(this.store.select(selectProducts).subscribe((products) => (this.products.data = products)));
 	}
 
 	onProductClick(id: number) {
-		this.store.dispatch(getProduct({ productId: id }));
+		// this.store.dispatch(GetProduct({ productId: id })); // move to the display page
+		return this.router.navigate(['/products', id]);
 	}
 
 	async onAddToCart(product: Product) {
@@ -56,26 +58,27 @@ export class ProductListComponent implements OnInit {
 		let cartProduct = cartProducts.find((cartProduct) => cartProduct.id === product.id);
 		if (cartProduct) {
 			this.store.dispatch(
-				updateCartProduct({
+				UpdateCartProduct({
 					orderItem: {
 						productId: cartProduct.id,
 						quantity: cartProduct.quantity + 1,
 					},
 				})
 			);
-		} else {
-			this.store.dispatch(
-				addCartProduct({
-					cartProduct: {
-						id: product.id,
-						quantity: 1,
-						name: product.name,
-						price: product.price,
-						category: product.category,
-					},
-				})
-			);
+			return;
 		}
+		this.store.dispatch(
+			AddCartProduct({
+				cartProduct: {
+					id: product.id,
+					quantity: 1,
+					name: product.name,
+					price: product.price,
+					category: product.category,
+				},
+			})
+		);
+
 	}
 
 	onCartClick() {
@@ -84,5 +87,9 @@ export class ProductListComponent implements OnInit {
 
 	onAddProduct() {
 		this.router.navigateByUrl('/products/create');
+	}
+
+	ngOnDestroy(): void {
+		this.subscriptions.unsubscribe();
 	}
 }

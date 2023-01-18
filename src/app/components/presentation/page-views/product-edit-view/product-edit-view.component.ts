@@ -4,11 +4,10 @@ import { FormGroup } from '@angular/forms';
 @Component({
 	selector: 'app-product-edit-view',
 	templateUrl: './product-edit-view.component.html',
-	styleUrls: ['./product-edit-view.component.scss'],
+	styleUrls: [],
 })
 export class ProductEditViewComponent {
-	// @ts-ignore
-	@Input() productForm: FormGroup;
+	@Input() productForm!: FormGroup;
 	@Input() disabled: boolean = false;
 
 	@Output() saveEvent: EventEmitter<void> = new EventEmitter<void>();

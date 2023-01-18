@@ -1,20 +1,20 @@
 import { initialCartState } from '../states/cart.state';
 import {
-	addCartProduct,
-	checkoutCart,
-	checkoutCartFailure,
-	checkoutCartSuccess,
-	decreaseProductQuantity,
-	increaseProductQuantity,
-	removeCartProduct,
-	updateCartProduct,
+	AddCartProduct,
+	CheckoutCart,
+	CheckoutCartFailure,
+	CheckoutCartSuccess,
+	DecreaseProductQuantity,
+	IncreaseProductQuantity,
+	RemoveCartProduct,
+	UpdateCartProduct,
 } from '../actions/cart.actions';
 import { createReducer, on } from '@ngrx/store';
 
 export const CartReducer = createReducer(
 	initialCartState,
 
-	on(addCartProduct, (state, { cartProduct }) => {
+	on(AddCartProduct, (state, { cartProduct }) => {
 		state.cartProducts.push(cartProduct);
 		return {
 			...state,
@@ -23,7 +23,7 @@ export const CartReducer = createReducer(
 		};
 	}),
 
-	on(updateCartProduct, (state, { orderItem }) => {
+	on(UpdateCartProduct, (state, { orderItem }) => {
 		const cartProductIdx = state.cartProducts.findIndex((product) => product.id === orderItem.productId);
 		if (cartProductIdx !== -1) {
 			state.cartProducts[cartProductIdx].quantity = orderItem.quantity;
@@ -35,14 +35,14 @@ export const CartReducer = createReducer(
 		};
 	}),
 
-	on(removeCartProduct, (state, { cartProductId }) => ({
+	on(RemoveCartProduct, (state, { cartProductId }) => ({
 		...state,
 		cartProducts: state.cartProducts.filter((product) => product.id !== cartProductId),
 		loading: false,
 		error: false,
 	})),
 
-	on(increaseProductQuantity, (state, { cartProduct }) => {
+	on(IncreaseProductQuantity, (state, { cartProduct }) => {
 		const productIndex = state.cartProducts.findIndex((cartProd) => cartProd.id == cartProduct.id);
 		state.cartProducts[productIndex].quantity++;
 		return {
@@ -52,7 +52,7 @@ export const CartReducer = createReducer(
 		};
 	}),
 
-	on(decreaseProductQuantity, (state, { cartProduct }) => {
+	on(DecreaseProductQuantity, (state, { cartProduct }) => {
 		const productIndex = state.cartProducts.findIndex((cartProd) => cartProd.id == cartProduct.id);
 		state.cartProducts[productIndex].quantity--;
 		return {
@@ -62,19 +62,19 @@ export const CartReducer = createReducer(
 		};
 	}),
 
-	on(checkoutCart, (state) => ({
+	on(CheckoutCart, (state) => ({
 		...state,
 		loading: true,
 	})),
 
-	on(checkoutCartSuccess, (state) => ({
+	on(CheckoutCartSuccess, (state) => ({
 		...state,
 		cartProducts: [],
 		loading: false,
 		error: false,
 	})),
 
-	on(checkoutCartFailure, (state) => ({
+	on(CheckoutCartFailure, (state) => ({
 		...state,
 		loading: false,
 		error: true,

@@ -79,10 +79,7 @@ import { environment } from '../environments/environment';
 		MatSnackBarModule,
 		StoreModule.forRoot(AppReducers),
 		EffectsModule.forRoot(AppEffects),
-		StoreDevtoolsModule.instrument({
-			maxAge: 25, // Retains last 25 states
-			logOnly: environment.production, // Restrict extension to log-only mode
-		}),
+		!environment.production ? StoreDevtoolsModule.instrument({maxAge: 25}) : [],
 		MatDialogModule,
 	],
 	providers: [],

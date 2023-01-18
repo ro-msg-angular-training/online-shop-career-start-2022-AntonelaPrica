@@ -5,11 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
 	selector: 'app-cart-view',
 	templateUrl: './cart-view.component.html',
-	styleUrls: ['./cart-view.component.scss'],
+	styleUrls: [],
 })
 export class CartViewComponent {
-	// @ts-ignore
-	@Input() cartProducts: MatTableDataSource<CartProduct>;
+	@Input() cartProducts!: MatTableDataSource<CartProduct>;
 	@Input() displayedColumns: string[] = [];
 
 	@Output() removeCartProductEvent: EventEmitter<number> = new EventEmitter<number>();

@@ -1,23 +1,23 @@
-import { loginUser, loginUserFailure, loginUserSuccess } from '../actions/auth.actions';
+import { LoginUser, LoginUserFailure, LoginUserSuccess } from '../actions/auth.actions';
 import { initialAuthState } from '../states/auth.state';
 import { createReducer, on } from '@ngrx/store';
 
 export const AuthReducer = createReducer(
 	initialAuthState,
 
-	on(loginUser, (state) => ({
+	on(LoginUser, (state) => ({
 		...state,
 		loading: true,
 	})),
 
-	on(loginUserSuccess, (state, { userDetails }) => ({
+	on(LoginUserSuccess, (state, { userDetails }) => ({
 		...state,
 		currentUser: userDetails,
 		loading: false,
 		error: false,
 	})),
 
-	on(loginUserFailure, (state) => ({
+	on(LoginUserFailure, (state) => ({
 		...state,
 		loading: false,
 		error: true,

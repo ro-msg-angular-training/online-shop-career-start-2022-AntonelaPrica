@@ -16,10 +16,8 @@ export class CartService {
 		const options: any = { responseType: 'text' };
 		let currentUser = this.userLoginService.currentUsername;
 		let order: Order = { customer: currentUser ?? '', products: [] };
-		for (let cartProduct of cartProducts) {
-			let orderItem: OrderItem = { productId: cartProduct.id, quantity: cartProduct.quantity };
-			order.products.push(orderItem);
-		}
+		order.products = cartProducts.map(cartProduct => { return {productId: cartProduct.id, quantity: cartProduct.quantity}; } )
+
 		return this.http.post(`/api/orders`, order, options);
 	}
 }

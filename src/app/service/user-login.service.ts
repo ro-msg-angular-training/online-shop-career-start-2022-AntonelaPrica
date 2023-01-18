@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserCredentials } from '../model/UserCredentials';
 import { UserDetails } from '../model/UserDetails';
 import { Observable } from 'rxjs';
+import * as _ from 'lodash';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,15 +16,15 @@ export class UserLoginService {
 	}
 
 	get isLoggedIn() {
-		return !!localStorage.getItem('username');
+		return !_.isNil(localStorage.getItem('username'));
 	}
 
 	get isUserAdmin() {
-		return !!localStorage.getItem('roles')?.includes('admin');
+		return _.eq(localStorage.getItem('roles')?.includes('admin'), true);
 	}
 
 	get isUserCustomer() {
-		return !!localStorage.getItem('roles')?.includes('customer');
+		return _.eq(localStorage.getItem('roles')?.includes('customer'), true);
 	}
 
 	get currentUsername() {

@@ -2,12 +2,12 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/states/app.state';
-import { deleteProduct } from '../../../store/actions/product.actions';
+import { DeleteProduct } from '../../../store/actions/product.actions';
 
 @Component({
 	selector: 'app-confirmation-delete-dialog',
 	templateUrl: './confirmation-delete-dialog.component.html',
-	styleUrls: ['./confirmation-delete-dialog.component.scss'],
+	styleUrls: [],
 })
 export class ConfirmationDeleteDialogComponent {
 	constructor(
@@ -22,6 +22,6 @@ export class ConfirmationDeleteDialogComponent {
 
 	onYesClick(): void {
 		this.onCloseDialog();
-		this.store.dispatch(deleteProduct({ productId: this.data.productId }));
+		this.store.dispatch(DeleteProduct({ productId: this.data.productId }));
 	}
 }

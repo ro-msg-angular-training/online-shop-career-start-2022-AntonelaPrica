@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { CartService } from '../../service/cart.service';
 import {
-	addCartProduct,
-	checkoutCart,
-	checkoutCartFailure,
-	checkoutCartSuccess,
-	updateCartProduct,
+	AddCartProduct,
+	CheckoutCart,
+	CheckoutCartFailure,
+	CheckoutCartSuccess,
+	UpdateCartProduct,
 } from '../actions/cart.actions';
 import { of } from 'rxjs';
 import { UtilityService } from '../../service/utility.service';
+import { CartState } from '../states/cart.state';
+import { Store } from '@ngrx/store';
+import { AppState } from '../states/app.state';
+import { selectCartProducts } from '../selectors/cart.selectors';
+
 
 @Injectable()
 export class CartEffects {
@@ -19,13 +24,14 @@ export class CartEffects {
 		private cartService: CartService,
 		private utilityService: UtilityService,
 		private actions$: Actions,
-		private router: Router
+		private router: Router,
+		private store: Store<AppState>
 	) {}
 
 	addCartProduct$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(addCartProduct),
+				ofType(AddCartProduct),
 				tap(() => {
 					this.utilityService.displayMessage('Product added to cart');
 				})
@@ -36,21 +42,27 @@ export class CartEffects {
 	updateCartProduct$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(updateCartProduct),
-				tap(() => {
-					this.utilityService.displayMessage('Product added to cart');
-				})
+				ofType(UpdateCartProduct), 
+				withLatestFrom(this.store.select(selectCartProducts)),
+		// 		tap((cartProducts) =>
+		// 		{
+		// 			const cartProductIdx = cartProducts.findIndex((product) => product.id === orderItem.productId);
+		// if (cartProductIdx !== -1) {
+		// 	cartProducts[cartProductIdx].quantity = orderItem.quantity;
+		// }
+		// 		} )
+								
 			),
 		{ dispatch: false }
 	);
 
 	checkoutCart$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(checkoutCart),
+			ofType(CheckoutCart),
 			switchMap((props) =>
 				this.cartService.checkoutCart(props.cartProducts).pipe(
-					map(() => checkoutCartSuccess()),
-					catchError((err) => of(checkoutCartFailure({ error: err })))
+					map(() => CheckoutCartSuccess()),
+					catchError((err) => of(CheckoutCartFailure({ error: err })))
 				)
 			)
 		)
@@ -59,7 +71,7 @@ export class CartEffects {
 	checkoutCartSuccess$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(checkoutCartSuccess),
+				ofType(CheckoutCartSuccess),
 				tap(() => {
 					this.utilityService.displayMessage('Order completed');
 					this.router.navigateByUrl('/products');
@@ -71,7 +83,7 @@ export class CartEffects {
 	checkoutCartFailure$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(checkoutCartFailure),
+				ofType(CheckoutCartFailure),
 				tap(() => {
 					this.utilityService.displayMessage('Cannot create order');
 				})

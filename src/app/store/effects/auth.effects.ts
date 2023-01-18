@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { UserLoginService } from '../../service/user-login.service';
 import { UserDetails } from '../../model/UserDetails';
 import { UtilityService } from '../../service/utility.service';
-import { loginUser, loginUserFailure, loginUserSuccess } from '../actions/auth.actions';
+import { LoginUser, LoginUserFailure, LoginUserSuccess } from '../actions/auth.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -19,11 +19,11 @@ export class AuthEffects {
 
 	login$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(loginUser),
+			ofType(LoginUser),
 			switchMap((props) =>
 				this.authService.login(props.userCredentials).pipe(
-					map((user: UserDetails) => loginUserSuccess({ userDetails: user })),
-					catchError((err) => of(loginUserFailure({ error: err })))
+					map((user: UserDetails) => LoginUserSuccess({ userDetails: user })),
+					catchError((err) => of(LoginUserFailure({ error: err })))
 				)
 			)
 		)
@@ -32,7 +32,7 @@ export class AuthEffects {
 	loginSuccess$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(loginUserSuccess),
+				ofType(LoginUserSuccess),
 				tap((props) => {
 					localStorage.setItem('username', props.userDetails.username);
 					localStorage.setItem('roles', props.userDetails.roles.toString());
@@ -45,7 +45,7 @@ export class AuthEffects {
 	loginError$ = createEffect(
 		() =>
 			this.actions$.pipe(
-				ofType(loginUserFailure),
+				ofType(LoginUserFailure),
 				tap(() => this.utilityService.displayMessage('User does not exist!'))
 			),
 		{ dispatch: false }

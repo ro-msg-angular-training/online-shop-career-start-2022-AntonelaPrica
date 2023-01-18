@@ -3,7 +3,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 @Component({
   selector: 'app-confirmation-delete-dialog-view',
   templateUrl: './confirmation-delete-dialog-view.component.html',
-  styleUrls: ['./confirmation-delete-dialog-view.component.scss']
+  styleUrls: []
 })
 export class ConfirmationDeleteDialogViewComponent {
 

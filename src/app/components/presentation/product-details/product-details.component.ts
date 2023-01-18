@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
 	selector: 'app-product-details',
 	templateUrl: './product-details.component.html',
-	styleUrls: ['./product-details.component.scss'],
+	styleUrls: [],
 })
 export class ProductDetailsComponent {
 	@Input() productForm: FormGroup | undefined;

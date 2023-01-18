@@ -5,11 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
 	selector: 'app-product-list-view',
 	templateUrl: './product-list-view.component.html',
-	styleUrls: ['./product-list-view.component.scss'],
+	styleUrls: [],
 })
 export class ProductListViewComponent {
-	// @ts-ignore
-	@Input() products: MatTableDataSource<Product>;
+	@Input() products!: MatTableDataSource<Product>;
 	@Input() displayedColumns: string[] = [];
 	@Input() isCurrentUserAdmin: boolean | null | undefined;
 	@Input() isCurrentUserCustomer: boolean | null | undefined;
